@@ -10,7 +10,9 @@
 // ==/UserScript==
 
 (function ($) {
-
+  String.prototype.repeat = function( num ) {
+      return new Array( num + 1 ).join( this );
+  }
   var Subject = (function() {
     var subject = function(name, unit, rank, term) {
       this.term = term;
@@ -109,6 +111,7 @@
 
   // 最後のテーブル一つは除く
   var comps = [0, 0, 0, 0, 0, 0];
+  console.log(comps);
   $("table.singleTableLine:lt(-1)").each (function() {
     // 一行目と系列名行は除く
     $(this).find('tr:gt(1)').each (function() {
@@ -118,31 +121,45 @@
       }
       $name_el = $tds.eq(0).find('.tdKamokuList');
       name = $name_el.text();
-      unit = $tds.eq(1).text();
+      unit = 0;
       rank = $tds.eq(2).text();
       unit_id = to_unit_id(name);
       if (is_drop(rank)) {
         $tds.eq(1).css('background', 'red');
         $tds.eq(2).css('background', 'red');
+      } else {
+        unit = parseInt($tds.eq(1).text().substr(0, 1));
       }
       if (unit_id != -1) {
         // unit 科目の処理
-        comps[unit_id] ++;
         $name_el.append(to_unit_str_wrap(unit_id));
+        comps[unit_id] += unit;
       }
     });
   });
 
   $layout_table = $("table.outline"); // この要素マジなんなの
-  $ntr_title = $layout_table.children('tbody').children('tr').eq(-4).clone();
+
+  $ntr_bar = $layout_table.children('tbody').children('tr').eq(-4).clone();
+  $ntr_title = $layout_table.children('tbody').children('tr').eq(-3).clone();
   $ntr_title.find(".subTitleArea").html('ユニット完成状況');
   $ntable = $('<table>').attr("width", "100%").attr("cellspacing", "0").attr("cellpadding", "0").attr("border", "0").addClass("singleTableLine");
   $ntbody = $('<tbody>');
+  console.log(comps);
   for (var i = 0; i < comps.length; i++) {
-    $tr = $('<tr>').append($('<th>').html(to_unit_str_long(i)), $('<td>').html(comps[i]));
+    $tr = $('<tr>').append(
+      $('<th>').html(to_unit_str_long(i)),
+      $('<td>').html(comps[i] + " / 6" + (comps[i] >= 6 ? "(満)" : "")),
+      $('<td>').html("■".repeat(comps[i]))
+    );
+    // TODO レイアウト整理
+    // TODO 単位数調整
     $ntbody.append($tr);
   }
-  $layout_table.append($ntr_title, $('<tr>').append($('<td>'), $ntable.append($ntbody)));
-  
- 
+  $layout_table.append(
+    $ntr_bar,
+    $ntr_title,
+    $('<tr>').append($('<td>'), $ntable.append($ntbody))
+  );
+
 })(jQuery);
