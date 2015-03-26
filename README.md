@@ -5,10 +5,10 @@ TDU Unipa
 
 UnipaBeautifulTimeboard.user.js
 ---
-時間割表の見た目改善
+時間割表の見た目改善  
 [解説記事](http://blog.elzup.com/gm_unipatb/)
 
 UnipaFIUnit.user.js
 ---
-ユニット完成状況を表示
-[解説記事](http://blog.elzup.com/gm_unipatb/)
+ユニット完成状況を表示  
+[解説記事](http://elzup.hatenablog.com/entry/gm-unipa-fi-unit)
