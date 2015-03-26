@@ -1,11 +1,11 @@
 ﻿// ==UserScript==
-// @name        UnipaForFI_S
+// @name        UnipaFIUnit
 // @namespace   http://elzup.com/gm/unipaforfis
 // @description ユニットの達成状況を追加・改
 // @include     http*://portal.sa.dendai.ac.jp/up/faces/up/*
 // @require     http://code.jquery.com/jquery-2.1.3.min.js
 // @require     https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js
-// @version     1
+// @version     1.1
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 
