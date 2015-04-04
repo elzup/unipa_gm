@@ -3,7 +3,7 @@
 // @namespace   notification
 // @description 学生時間割表の見た目を整える
 // @include     http*://portal.sa.dendai.ac.jp/up/faces/up/*
-// @version     1.21
+// @version     1.23
 // @grant       none
 // ==/UserScript==
 
@@ -27,7 +27,7 @@ $(function () {
         'header:form1:htmlMenuItemButton': '実行',
         'header:form1:hiddenMenuNo': '602',
         'header:form1:hiddenFuncRowId': '0',
-        'com.sun.faces.VIEW': '_id10973:_id11010',
+        'com.sun.faces.VIEW': $('[name="com.sun.faces.VIEW"]').val(),
         'header:form1': 'header:form1'
     };
     $.ajax({
@@ -38,7 +38,7 @@ $(function () {
         success: function(html, status) {
             var got_units = [];
             $(html).find('#singleTableArea>table>tbody>tr').each(function() {
-                if ('ABCS'.indexOf($(this).find(".tdGakkiList").text()) != -1) {
+                if ('ABCS'.indexOf($(this).find(".tdHyokaList").text()) == -1) {
                     return;
                 }
                 got_units.push($(this).find('.tdKamokuList').text());

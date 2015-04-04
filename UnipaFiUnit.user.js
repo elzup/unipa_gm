@@ -5,7 +5,7 @@
 // @include     http*://portal.sa.dendai.ac.jp/up/faces/up/*
 // @require     http://code.jquery.com/jquery-2.1.3.min.js
 // @require     https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js
-// @version     1.2.2
+// @version     1.2.1
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -30,6 +30,7 @@
     ], [
       '画像処理',
       '画像処理演習',
+      '音声・音響情報処理',
       'コンピュータ音楽作品制作演習',
       'バーチャルリアリティ',
       '音声・音響情報処理'
