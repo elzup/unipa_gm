@@ -25,10 +25,10 @@ $(function () {
 
         var data = {
             'header:form1:htmlMenuItemButton': '実行',
-'header:form1:hiddenMenuNo': '602',
-'header:form1:hiddenFuncRowId': '0',
-'com.sun.faces.VIEW': $('[name="com.sun.faces.VIEW"]').val(),
-'header:form1': 'header:form1'
+            'header:form1:hiddenMenuNo': '602',
+            'header:form1:hiddenFuncRowId': '0',
+            'com.sun.faces.VIEW': $('[name="com.sun.faces.VIEW"]').val(),
+            'header:form1': 'header:form1'
         };
         $.ajax({
             url: '#',
@@ -75,7 +75,8 @@ $(function () {
                         if (!unit) {
                             unit = '同上';
                         }
-                        $span_unit = '<span class="unit">' + unit + '<span>単位</span></span>';
+                        $span_unit = $('<span/>').addClass('unit').html(unit);
+//                        $span_unit = '<span class="unit">' + unit + '<span>単位</span></span>';
                     }
                     term_code = -1;
                     if (term == '　') {
@@ -112,15 +113,15 @@ $(function () {
                     $(this).html('');
                     $(this).append($('<div/>').append($name_el, $term_el));
                     $(this).after(
-                            '<p class="teacher">☺' + teacher + '</p>' +
-                            '<p class="subs">' + 
-                            '➡<span class="room">' + room + '</span>' +
-                            $span_unit + 
-                            '</p>' +
-                            '<p class="id">' + id + '</p>'
-                            );
-
+                        $('<p/>').addClass('teacher').html('☺' + teacher),
+                        $('<p/>').addClass('subs').html('➡').append(
+                            $('<span/>').addClass('room').html(room),
+                            $span_unit
+                        ),
+                        $('<p/>').addClass('id').html(id)
+                    );
                 });
+
                 var $id_params = $('.linkMark .id');
 
                 // style変更
