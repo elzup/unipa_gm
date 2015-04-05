@@ -3,7 +3,7 @@
 // @namespace   notification
 // @description 学生時間割表の見た目を整える
 // @include     http*://portal.sa.dendai.ac.jp/up/faces/up/*
-// @version     1.23
+// @version     1.25
 // @grant       none
 // ==/UserScript==
 
@@ -86,6 +86,8 @@ $(function () {
                     term_code = 1;
                 }
 
+                unit_ids = to_unit_id(name);
+
                 $(this).parent().addClass('cid-' + id.substr(0, 3));
                 $(this).parent().addClass('name-' + name);
                 if (got_units.indexOf(name) != -1) {
@@ -96,12 +98,19 @@ $(function () {
                     $(this).parent().addClass('term-' + term_code);
                 }
 
-                $(this).html(
-                        '<div>' +
-                        '<span class="name">' + name + '</span>' +
-                        '<span class="term">' + term + '</span>' +
-                        '</div>'
-                        );
+
+                units_html = '';
+                $name_el = $('<span/>').addClass('name').html(name);
+                $term_el = $('<span/>').addClass('term').html(term);
+                if (unit_ids.length != 0) {
+                  // unit 科目の処理
+                  for (var j = 0; j < unit_ids.length; j++) {
+                      $name_el.append(to_unit_str_wrap(unit_ids[j]));
+                  }
+                }
+
+                $(this).html('');
+                $(this).append($('<div/>').append($name_el, $term_el));
                 $(this).after(
                         '<p class="teacher">☺' + teacher + '</p>' +
                         '<p class="subs">' + 
@@ -234,4 +243,82 @@ $(function () {
     } catch (e) {
         $('body').prepend('<p style="color:red;">[GreasmonkeyScript: BeautifulTimeboard] でエラーが起こっています, 無効にして下さい</p>');
     }
+
+    function to_unit_str(id) {
+        return ["CG", "VS", "MI", "WI", "SN", "ST"][id];
+    }
+
+    function to_unit_str_long(id) {
+        return [
+            "Computer Graphics (コンピュータグラフィックス)",
+        "Video & Sound (映像と音)",
+        "Media & Interaction (メディアとインタラクション)",
+        "Web Intelligence (ウェブインテリジェンス)",
+        "Security & Network (セキュリティとネットワーク)",
+        "Software Technology (ソフトウェアテクノロジ)"
+            ][id];
+    }
+
+    function to_unit_id(name) {
+        lib = [[
+            'ＣＧモデリングおよび演習',
+        'ＣＧレンダリングおよび演習',
+        '形状処理および演習',
+        'コンピュータアニメーションおよび演習'
+            ], [
+            '画像処理',
+        '画像処理演習',
+        '音声・音響情報処理',
+        'コンピュータ音楽作品制作演習',
+        'バーチャルリアリティ',
+        '音声・音響情報処理'
+            ], [
+            'ヒューマンインタラクションおよび演習',
+        '人間情報システムおよび演習',
+        'メディア情報学',
+        'インタラクションデザイン'
+            ], [
+            'サーバ設計論',
+        '情報アクセスと知的処理',
+        'サーバプログラミング演習',
+        'Web情報システム演習',
+        'データベースプログラミング演習'
+            ], [
+            '情報セキュリティの基礎と暗号技術',
+        'ネットワークプログラミング',
+        'ネットワークプログラミング演習',
+        'ネットワークセキュリティおよび演習'
+            ], [
+            'サーバ設計論',
+        'メディア情報学',
+        'サーバプログラミング演習',
+        'ソフトウェア設計',
+        '情報システム論',
+        'ソフトウェア分析・モデリング'
+            ]];
+        kinds = [];
+        for (var i = 0; i < lib.length; i++) {
+            if (lib[i].indexOf(name) >= 0) {
+                kinds.push(i);
+            }
+        }
+        return kinds;
+    }
+
+    function to_unit_str_wrap(id) {
+        var style = {
+            background: 'orange',
+            color: 'white',
+            'border-radius': '4px',
+            'padding-left': '5px',
+            'padding-right': '5px',
+            'margin-left': '5px',
+        };
+        // 情報とメディアで色分け
+        if (id >= 3) {
+            style.background = 'blue';
+        }
+        return $('<span>').html(to_unit_str(id)).css(style);
+    }
+
 });
