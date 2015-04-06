@@ -5,7 +5,7 @@
 // @include     http*://portal.sa.dendai.ac.jp/up/faces/up/*
 // @require     http://code.jquery.com/jquery-2.1.3.min.js
 // @require     https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js
-// @version     1.2.1
+// @version     1.2.2
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -99,7 +99,7 @@
   }
 
   function is_drop(rank) {
-    return rank != '' && 'SABC'.indexOf(rank) == -1;
+    return rank != '' && 'ABCSRARBRCRSRN'.indexOf(rank) == -1;
   }
 
   // 実行ページチェック

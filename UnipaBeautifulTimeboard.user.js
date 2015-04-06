@@ -3,7 +3,7 @@
 // @namespace   notification
 // @description 学生時間割表の見た目を整える
 // @include     http*://portal.sa.dendai.ac.jp/up/faces/up/*
-// @version     1.25
+// @version     1.29
 // @grant       none
 // ==/UserScript==
 
@@ -38,7 +38,7 @@ $(function () {
             success: function(html, status) {
                 var got_units = [];
                 $(html).find('#singleTableArea>table>tbody>tr').each(function() {
-                    if ('ABCS'.indexOf($(this).find(".tdHyokaList").text()) == -1) {
+                    if ('ABCSRARBRCRSRN'.indexOf($(this).find(".tdHyokaList").text()) == -1) {
                         return;
                     }
                     got_units.push($(this).find('.tdKamokuList').text());
@@ -201,28 +201,18 @@ $(function () {
                 // 人科のトグル idが11Gから始まるもの
                 $('#second-control-box').append('<input id="toggle-show-punit" type="checkbox" checked="" />人科の表示');
                 $('#second-control-box').append('<input id="toggle-show-got" type="checkbox" checked=""/>取得科目の表示');
-                $('#toggle-show-punit').change(function() {
-                    if ($(this).is(":checked")) {
-                        $('.cid-11G').show();
-                    } else {
-                        $('.cid-11G').hide();
-                    }
-                });
-                $('#toggle-show-got').change(function() {
-                    if ($(this).is(":checked")) {
-                        $('.got').show();
-                    } else {
-                        $('.got').hide();
-                    }
-                });
                 // 4半期のクラスのみ表示を切り替えるinput
                 $('#second-control-box').append(
                         '<input type="radio" name="view-term" value="0" checked="">' + term_cu_str + '期' +
                         '<input type="radio" name="view-term" value="1">' + term_cu_str + '前期' +
                         '<input type="radio" name="view-term" value="2">' + term_cu_str + '後期'
                         );
-                $('input[name="view-term"]:radio').change(function() {
-                    switch($(this).val()) {
+                var changed_filter = function() {
+                    $('.cid-11G').show();
+                    $('.got').show();
+                    $('.term-0').show();
+                    $('.term-1').show();
+                    switch($('input[name="view-term"]:radio').val()) {
                         case '0':
                             $('.term-0').show();
                             $('.term-1').show();
@@ -238,7 +228,16 @@ $(function () {
                         default:
                             break;
                     }
-                });
+                    if (!$('#toggle-show-punit').is(":checked")) {
+                        $('.cid-11G').hide();
+                    }
+                    if (!$('#toggle-show-got').is(":checked")) {
+                        $('.got').hide();
+                    }
+                }
+                $('#toggle-show-punit').change(changed_filter);
+                $('#toggle-show-got').change(changed_filter);
+                $('input[name="view-term"]:radio').change(changed_filter);
             }
         });
     } catch (e) {
